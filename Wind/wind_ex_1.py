@@ -36,14 +36,14 @@ trendline = slope * x_trend + intercept
 # Values for exceedence probability for a 50 year event
 y_value = float(-np.log((-np.log(0.98**R))))
 
-# Variablen definieren
+# Define variables
 x, y = symbols('x y')
 
-# Geradengleichungen
+# Line equation
 eq1 = Eq(y, y_value)  # horizontal line at 0.98
 eq2 = Eq(y, slope * x + intercept)  # trendline
 
-# Schnittpunkt berechnen
+# Calculate intersection point
 solution = solve((eq1, eq2), (x, y))
 print(f"Intersection point: x = {solution[x]}, y = {solution[y]}")
 
@@ -71,25 +71,25 @@ fig1.savefig(f"../plots_wind/char_wind_speed_vertical.pdf", format = 'pdf', dpi 
 
 fig2 = plt.figure(figsize=(8, 5))
 
-# Punkte und Trendlinie plotten
+# Plot points and trendline
 plt.scatter(f_red, u_12_sort)
 plt.plot(trendline, x_trend, label="Trendlinie", color="red")
 
-# Horizontale und vertikale Linien anpassen
+# Adjust horizontal and vertical lines
 plt.vlines(y_value, ymin=18.5, ymax=solution[x]+0.5, color='black', linestyles='--')
 plt.hlines(solution[x], xmin=trendline[0], xmax=y_value+0.3, color='black', linestyles='--')
 
-# Text anpassen
+# Adjust text
 plt.text(1, solution[x] + 0.1, f"{solution[x]:.2f}", fontsize=10, color="black")
 plt.text(y_value + 0.1, 20, f"0.98 = {y_value:.4f}", fontsize=10, color="black", rotation=90)
 
 plt.text(-1, 22, f"$\mu$ = {u_12_mean:.2f} m/s\n$\sigma$ = {u_12_std:.2f} m/s", color='black')
 
-# Achsenlimits setzen
+# Set axis limit
 plt.xlim(trendline[0], 5)
 plt.ylim(18.5, 27)
 
-# Achsenbeschriftungen tauschen
+# Change axis label
 plt.xlabel('Reduced Variate = -ln(-ln($f_{rel}$))')
 plt.ylabel('Wind Speed [m/s]')
 
@@ -149,118 +149,3 @@ combined = np.column_stack((u_12_sort, [f"{value:.0f}" for value in np.arange(1,
 Headings = ["Sorted ascending [m/s]", "Rank", "$f_{rel}$", "$f_{red}$"]
 GenerateLatexTable3(combined, Headings, "Chracteristic_Wind_Speed_order_statisitic_data")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# loc = 0  # Lageparameter
-# scale = 1  # Skalenparameter
-
-# y = gumbel_r.cdf(f_rel, loc=loc, scale=scale)
-
-# y_transformed = -np.log(-np.log(y))
-
-# fig2 = plt.figure(figsize=(8, 6))
-# plt.scatter(u_12, y_transformed, label=f'Gumbel-Verteilung (loc={loc}, scale={scale})')
-# # plt.yscale('log')  # Setzt die y-Achse auf logarithmisch
-# # plt.xscale('log')  # Setzt die x-Achse auf logarithmisch
-# # formatter = LogFormatter(labelOnlyBase=False)  # Zahlen ohne wissenschaftliche Notation
-# # plt.gca().yaxis.set_major_formatter(formatter)
-# plt.xlabel('x')
-# plt.ylabel('Dichte (logarithmisch)')
-# plt.title('Gumbel-Verteilung mit doppellogarithmischer Skalierung')
-# plt.xlim(19,24)
-# # plt.ylim(1,999)
-# plt.legend()
-# plt.grid(True, which="both", ls="--", linewidth=0.5)
-# plt.show()
-
-
-
-
-
-# import matplotlib.pyplot as plt
-# import numpy as np
-# from matplotlib.scale import ScaleBase
-# from matplotlib.transforms import Transform
-# import matplotlib.ticker as ticker
-# from matplotlib import scale as mscale
-
-# class DoubleLogTransform(Transform):
-#     input_dims = 1
-#     output_dims = 1
-#     is_separable = True
-
-#     def transform_non_affine(self, y):
-#         # Transformation -log(-log(y)), funktioniert für 0 < y < 1
-#         return -np.log(-np.log(y))
-
-#     def inverted(self):
-#         return InvertedDoubleLogTransform()
-
-# class InvertedDoubleLogTransform(Transform):
-#     input_dims = 1
-#     output_dims = 1
-#     is_separable = True
-
-#     def transform_non_affine(self, y_transformed):
-#         # Inverse Transformation exp(-exp(-y))
-#         return np.exp(-np.exp(-y_transformed))
-
-#     def inverted(self):
-#         return DoubleLogTransform()
-
-# class DoubleLogScale(ScaleBase):
-#     name = 'doublelog'
-
-#     def get_transform(self):
-#         return DoubleLogTransform()
-
-#     def set_default_locators_and_formatters(self, axis):
-#         axis.set_major_locator(ticker.AutoLocator())
-#         axis.set_major_formatter(ticker.FuncFormatter(self.formatter))
-
-#     def formatter(self, y, pos):
-#         original_y = np.exp(-np.exp(-y))
-#         return f"{original_y:.2f}"
-
-# # Registrierung der neuen Skalierung über `mscale`
-# mscale.register_scale(DoubleLogScale)
-
-# # Beispiel-Daten
-# x = np.linspace(1, 10, 100)
-# y = np.exp(-np.exp(-x))  # Beispielhafte Funktion
-
-# f_rel_scaled = 1 + (f_rel - 1 / (N + 1)) * (999 / (1 - 1 / (N + 1)))  # Skalierung auf [1, 1000]
-
-# # Transformation: -log(-log(y))
-# transformed_y = -np.log(-np.log(f_rel_scaled / 1000))
-
-# # Plot
-# fig, ax = plt.subplots()
-# ax.plot(u_12, f_red, label='y = exp(-exp(-x))')
-
-# # Setze die y-Achse mit der benutzerdefinierten doppellogarithmischen Skalierung
-# ax.set_yscale('doublelog')
-
-# # Achsenbeschriftung und Titel
-# ax.set_xlabel("x-Werte")
-# ax.set_ylabel("y-Werte (-log(-log(y)))")
-# ax.set_title("Plot mit doppelt logarithmisch skalierter y-Achse")
-
-# # Gitter und Legende
-# ax.grid(True, linestyle="--", linewidth=0.5)
-# ax.legend()
-
-# # Plot anzeigen
-# plt.show()

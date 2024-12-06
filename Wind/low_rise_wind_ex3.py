@@ -47,14 +47,14 @@ def plot_reduced_variate(v, p, extreme, storm, filename, R=1, unit='$\mathrm{kN/
         
     trendline = slope * x_trend + intercept
     
-    # Variablen definieren
+    # Define Variables
     x, y = symbols('x y')
     
-    # Geradengleichungen
+    # Line equation
     eq1 = Eq(y, y_value)  # horizontal line at 0.98
     eq2 = Eq(y, slope * x + intercept)  # trendline
         
-    # Schnittpunkt berechnen
+    # Calculate intersection point
     solution = solve((eq1, eq2), (x, y))
     # print(f"Intersection point: x = {solution[x]}, y = {solution[y]}")
     
@@ -204,26 +204,3 @@ B2_combined = np.column_stack((np.arange(1,19), zone, [f"{value:.3f}" for value 
 Headings = ["Signal", "Zone", "Wind Tunnel", "EC", "Deviation pressure"]
 GenerateLatexTable3(B2_combined, Headings, f"Exercise_C_B_2_{FileName}")
 
-
-##### OTHERS ##################################################################
-
-# for i in range(1, Ntap+1):
-#     # Signal selection
-#     SignalNo = i                    # Number of signal to be analysed (1-18)
-#     X0 = Series[:, SignalNo - 1]    # Saving selected data to input vector (adjust for zero-based indexing)
-       
-#     # Sampling parameters
-#     Fsamp = 1600                # Sampling frequency
-#     DT = 1 / Fsamp              # Time step calculation
-    
-#     # Generate time axis
-#     TAx = np.arange(0, m1) * DT
-    
-    
-#     # # Optional: Ausgabe prüfen
-#     # print(f"Series shape: {Series.shape}")
-#     # print(f"Time axis length: {len(TAx)}")
-    
-#     fig1 = plt.figure(figsize=(15,5))
-#     plt.plot(TAx, X0, linewidth=0.35)
-#     plt.show()

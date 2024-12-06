@@ -326,7 +326,6 @@ timestep = 0.005    # in seconds
 
 
 # Importing raw acceleration data and fit it in one column
-# raw_data = pd.read_csv('../PALMSPR_MVH045.TXT', delim_whitespace=True, header=None)
 raw_data = pd.read_csv('../PALMSPR_MVH045.TXT', sep='\s+', header=None)                 # new version for whitespace as seperator
 time_history = pd.DataFrame(raw_data.values.flatten(), columns=['PGA']).dropna()
 
@@ -429,47 +428,6 @@ plt.show()
 fig5.savefig(f"../plots/time_series_horizontal_DOFs_short.pdf", format = 'pdf', dpi = 1200, bbox_inches = 'tight')
 
 
-
-
-
-###############################################################################
-##### NOT CORRECT! CODE FOR THA ABOVE!!! ######################################
-###############################################################################
-
-# Get spectral displacement from time history
-# S_Dth_l = get_spectral_displacement(S_th, period_l, dofs)
-# S_Dth_s = get_spectral_displacement(S_th, period_s, dofs)
-
-# S_Dth_l = get_spectral_displacement(th_response, period_l, dofs)
-# S_Dth_s = get_spectral_displacement(th_response, period_s, dofs)
-
-# Calculate modal displacement for time history spectrum
-# u_th_l = pd.DataFrame().rename_axis("DOFs")
-# u_th_s = pd.DataFrame().rename_axis("DOFs")
-
-# for mode_shape in range(1, dofs+1):
-#     u_th_l_i = U_l_norm[mode_shape-1]*GAMMA_l[mode_shape-1]*S_Dth_l[mode_shape-1]
-#     u_th_l.insert(mode_shape-1, f"Mode {mode_shape}", u_th_l_i, False)    
-    
-#     u_th_s_i = U_s_norm[mode_shape-1]*GAMMA_s[mode_shape-1]*S_Dth_s[mode_shape-1]
-#     u_th_s.insert(mode_shape-1, f"Mode {mode_shape}", u_th_s_i, False)
-    
-# u_th_l.index = u_th_l.index + 1
-# u_th_s.index = u_th_s.index + 1
-
-# Calculate total deformations 
-
-# def get_total_disp_time_history(df):
-#     total_disp = np.array([])
-#     for i in range(dofs):
-#         total_disp = np.append(total_disp, sum(abs(df.iloc[i,:])))
-#     return total_disp
-
-
-# total_disp_thl = get_total_disp_time_history(u_th_l)*q
-# total_disp_ths = get_total_disp_time_history(u_th_s)*q
-
-
 # Comparison of MRSA and THA
 acc_th_l = []
 acc_th_s = []
@@ -538,8 +496,6 @@ GenerateLatexTable(u_d_l.reset_index().to_numpy(), Headings, format_str, "modal_
 GenerateLatexTable(u_e_l.reset_index().to_numpy(), Headings, format_str, "modal_displacements_elastic_l" )
 GenerateLatexTable(u_d_s.reset_index().to_numpy(), Headings, format_str, "modal_displacements_design_s" )
 GenerateLatexTable(u_e_s.reset_index().to_numpy(), Headings, format_str, "modal_displacements_elastic_s" )
-# GenerateLatexTable(u_th_l.reset_index().to_numpy(), Headings, format_str, "modal_displacements_time_history_l" )
-# GenerateLatexTable(u_th_s.reset_index().to_numpy(), Headings, format_str, "modal_displacements_time_history_s" )
 
 
 Headings = ["Element 1", "Element 2", "Element 3", "Element 4", "Element 5", "Element 6", "Element 7", "Element 8", "Element 9", "Element 10", "Element 11", "Element 12"]

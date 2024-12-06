@@ -303,33 +303,6 @@ def get_sectional_forces_3(E, Ib, Ic, Lb, Lc, U):
     return sectional_forces_total/1000 # in kN and kNm
 
 
-
-# def get_SF_SRSS(df, elements):    
-#     srss_df = pd.DataFrame().rename_axis("Local Force")
-#     F1_SRSS = []
-#     F2_SRSS = []
-#     F3_SRSS = []
-#     F4_SRSS = []
-#     for i in range(0,elements):
-#         F1 = 0
-#         F2 = 0
-#         F3 = 0
-#         F4 = 0
-#         for j in range(0,elements):
-#             F1 = F1 + df.iloc[j, i]**2
-#             F2 = F2 + df.iloc[j+1, i]**2
-#             F3 = F3 + df.iloc[j+2, i]**2
-#             F4 = F4 + df.iloc[j+3, i]**2
-#         F1_SRSS.append(np.sqrt(F1))
-#         F2_SRSS.append(np.sqrt(F2))
-#         F3_SRSS.append(np.sqrt(F3))
-#         F4_SRSS.append(np.sqrt(F4))
-#         srss_df.insert(i, f"Element {i+1}", F1_SRSS, False) 
-
-    
-#     return srss_df
-
-
 def get_SF_SRSS(df, elements):
     results = {
         "F1_SRSS": [],
@@ -408,71 +381,6 @@ def get_SF_CQC(df, damp_ratio, omega, elements):
     cqc_df.columns = [f"Element_{i+1}" for i in range(elements)]  # rename column
     
     return cqc_df
-
-
-
-
-def plot_sectionforces(elemente, df):
-    """
-    Plottet die Querkraft und das Moment entlang der Elemente eines Rahmens.
-
-    Parameters:
-    - elemente: Liste von Elementen mit Start- und Endpunkten [(x_start, y_start), (x_end, y_end), ...]
-    - querkraefte: Liste der Querkraefte am Start und Ende der Elemente [(Q_start, Q_end), ...]
-    - momente: Liste der Momente am Start und Ende der Elemente [(M_start, M_end), ...]
-    """
-    
-    shear_forces = []
-    moments = []
-    for i in range(12):
-        v_start = df.iloc[0,i]
-        v_end = df.iloc[2,i]
-        shear_forces.append((v_start, v_end))
-        m_start = df.iloc[1,i]
-        m_end = df.iloc[3,i]
-        moments.append((m_start, m_end))
-    
-    # fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
-    # fig.suptitle("Section Forces")
-    
-    # Plot Frame
-    for i, ((x_start, y_start), (x_end, y_end)) in enumerate(elemente):
-        plt.plot([x_start, x_end], [y_start, y_end], color = 'b', linestyle = '--')
-        
-
-    # # Querkraft plotten
-    # for i, ((x_start, y_start), (x_end, y_end)) in enumerate(elemente):
-    #     Q_start, Q_end = shear_forces[i]
-    #     ax1.plot([x_start, x_end], [Q_start, Q_end], marker='o', label=f'Element {i+1}')
-    
-    # ax1.set_title("Querkraftverlauf")
-    # ax1.set_xlabel("Position entlang des Elements")
-    # ax1.set_ylabel("Querkraft")
-    # ax1.legend()
-    # ax1.grid(True)
-
-    # # Moment plotten
-    # for i, ((x_start, y_start), (x_end, y_end)) in enumerate(elemente):
-    #     M_start, M_end = moments[i]
-    #     ax2.plot([x_start, x_end], [M_start, M_end], marker='o', label=f'Element {i+1}')
-    
-    # ax2.set_title("Momentenverlauf")
-    # ax2.set_xlabel("Position entlang des Elements")
-    # ax2.set_ylabel("Moment")
-    # ax2.legend()
-    # ax2.grid(True)
-
-    plt.tight_layout(rect=[0, 0, 1, 0.96])
-    plt.show()
-
-# # Beispielaufruf
-# elemente = [((0, 0), (1, 0)), ((1, 0), (2, 0))]  # Start- und Endpunkte der Elemente
-# querkraefte = [(5, -3), (-3, 2)]  # Querkraft am Start und Ende jedes Elements
-# momente = [(10, -8), (-8, 6)]  # Moment am Start und Ende jedes Elements
-
-# plot_schnittkraefte(elemente, querkraefte, momente)
-
-
 
 
 def plotdiagram(X,IX,ne,Mz,scale,title):

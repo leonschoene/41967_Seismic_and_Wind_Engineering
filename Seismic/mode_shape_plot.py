@@ -17,8 +17,6 @@ def plot_mode_shape(mode, freq, omegan, U, X, IX, bound, side):
     # Mode shape vector normalized to unity
     vec = np.zeros(12,dtype=float)
     vec = U[:,mode-1]
-    #Vplot = Vplot/np.max(np.abs((Vplot[np.arange(0,np.size(Vplot),3)],
-                                 #Vplot[np.arange(1,np.size(Vplot),3)])))
                                  
     # Finding maximum absolut value and normalize to maximal original value                           
     MVec = max(vec)
@@ -151,8 +149,6 @@ def plot_mode_shape(mode, freq, omegan, U, X, IX, bound, side):
          h2 = plt.plot(xx_deformed*scale, yy_deformed*scale, "red")  
              
             
-    # plt.xlim([min(X[:,0])-2, max(X[:,0])+2])
-    # plt.ylim([min(X[:,1]), max(X[:,1])+2])
     plt.xlim(-2, 12)
     plt.ylim(0, 16)
          
@@ -237,9 +233,6 @@ def plot_mode_shape_without_annotations(mode, freq, omegan, U, X, IX, bound, sid
 
 
     fig1 = plt.figure(figsize=(4, 6))
-    # for time_step in t:
-    #     # Clear the previous plot
-    #     plt.clf()
     time_step = 3*2*np.pi/omegan_m
     for e in range(1, E_total+1):
          # Length of each element
@@ -313,18 +306,8 @@ def plot_mode_shape_without_annotations(mode, freq, omegan, U, X, IX, bound, sid
          h1 = plt.plot(xx,yy, "b--")
          h2 = plt.plot(xx_deformed*scale, yy_deformed*scale, "red")  
              
-            
-    # plt.xlim([min(X[:,0])-2, max(X[:,0])+2])
-    # plt.ylim([min(X[:,1]), max(X[:,1])+2])
     plt.xlim(-2, 12)
     plt.ylim(0, 16)
-         
-    # plt.title("Mode shape (mode " + str(mode) + ") , fn = " + str(round(freq_m,2)) + " Hz, time = " + str(round(time_step,2)) + " s")
-    # plt.xlabel("Building width [m]")
-    # plt.ylabel("Building height [m]")
-    # plt.legend(['Undeformed state', 'Deformed state'])
-    # plt.grid()
-    # Pause for a short moment to create the animation effect
     plt.gca().spines['top'].set_visible(False)
     plt.gca().spines['right'].set_visible(False)
     plt.gca().spines['left'].set_visible(False)
